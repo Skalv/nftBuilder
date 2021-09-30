@@ -1,5 +1,10 @@
 "use strict";
 
+require('dotenv').config();
+
+const pinataSDK = require('@pinata/sdk');
+const pinata = pinataSDK(process.env.PINATA_API_KEY, process.env.PINATA_API_SECRET);
+
 const path = require("path");
 const isLocal = typeof process.pkg === "undefined";
 const basePath = isLocal ? process.cwd() : path.dirname(process.execPath);
@@ -123,6 +128,19 @@ const addMetadata = (_dna, _edition) => {
   attributesList = [];
 };
 
+const uploadPinata = async (_editionCount) => {
+  let metadata = metadataList.find((meta) => meta.edition == _editionCount);
+  const hash = await pinata.pinFromFS(`${buildDir}/images/${_editionCount}.png`, {
+    pinataMetadata: metadata
+  })
+  metadataList = metadataList.map(meta => {
+    if (meta.edition == _editionCount) {
+      meta.image = `ipfs://${hash.IpfsHash}`
+    }
+    return meta
+  })
+}
+
 const addAttributes = (_element) => {
   let selectedElement = _element.layer.selectedElement;
   attributesList.push({
@@ -195,8 +213,8 @@ const saveMetaDataSingleFile = (_editionCount) => {
   let metadata = metadataList.find((meta) => meta.edition == _editionCount);
   debugLogs
     ? console.log(
-        `Writing metadata for ${_editionCount}: ${JSON.stringify(metadata)}`
-      )
+      `Writing metadata for ${_editionCount}: ${JSON.stringify(metadata)}`
+    )
     : null;
   fs.writeFileSync(
     `${buildDir}/json/${_editionCount}.json`,
@@ -218,7 +236,7 @@ function shuffle(array) {
   return array;
 }
 
-const startCreating = async () => {
+const startCreating = async (upload = false) => {
   let layerConfigIndex = 0;
   let editionCount = 1;
   let failedCount = 0;
@@ -252,7 +270,7 @@ const startCreating = async () => {
           loadedElements.push(loadLayerImg(layer));
         });
 
-        await Promise.all(loadedElements).then((renderObjectArray) => {
+        await Promise.all(loadedElements).then(async (renderObjectArray) => {
           debugLogs ? console.log("Clearing canvas") : null;
           ctx.clearRect(0, 0, format.width, format.height);
           if (background.generate) {
@@ -266,6 +284,9 @@ const startCreating = async () => {
             : null;
           saveImage(abstractedIndexes[0]);
           addMetadata(newDna, abstractedIndexes[0]);
+          if (upload) {
+            await uploadPinata(abstractedIndexes[0]);
+          }
           saveMetaDataSingleFile(abstractedIndexes[0]);
           console.log(
             `Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(

@@ -5,7 +5,7 @@ const isLocal = typeof process.pkg === "undefined";
 const basePath = isLocal ? process.cwd() : path.dirname(process.execPath);
 const { MODE } = require(path.join(basePath, "src/blendMode.js"));
 const description =
-  "This is the description of your NFT project, remember to replace this";
+  "First collection of our poop !";
 const baseUri = "ipfs://NewUriToReplace";
 
 const layerConfigurations = [
@@ -13,12 +13,11 @@ const layerConfigurations = [
     growEditionSizeTo: 10,
     layersOrder: [
       { name: "Background" },
-      { name: "Eyeball" },
-      { name: "Eye color" },
-      { name: "Iris" },
-      { name: "Shine" },
-      { name: "Bottom lid" },
-      { name: "Top lid" },
+      { name: "Body" },
+      { name: "Around" },
+      { name: "Eyes" },
+      { name: "Mouth" },
+      { name: "Access" },
     ],
   },
 ];
@@ -33,11 +32,13 @@ const format = {
 };
 
 const background = {
-  generate: true,
+  generate: false,
   brightness: "80%",
 };
 
-const extraMetadata = {};
+const extraMetadata = {
+  creator: "SkalvStudio & DotPerfect"
+};
 
 const rarityDelimiter = "#";
 

@@ -10,5 +10,5 @@ const { startCreating, buildSetup } = require(path.join(
 
 (() => {
   buildSetup();
-  startCreating();
+  startCreating(process.argv.indexOf('--upload') != -1);
 })();
