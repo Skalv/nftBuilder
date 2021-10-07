@@ -19,7 +19,6 @@ const layersDir = path.join(basePath, "/layers");
 console.log(path.join(basePath, "/src/config.js"));
 const {
   format,
-  baseUri,
   description,
   background,
   uniqueDnaTorrance,
@@ -28,7 +27,9 @@ const {
   shuffleLayerConfigurations,
   debugLogs,
   extraMetadata,
+  pinataConfig
 } = require(path.join(basePath, "/src/config.js"));
+let { baseUri } = require(path.join(basePath, "/src/config.js"));
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
 var metadataList = [];
@@ -128,19 +129,6 @@ const addMetadata = (_dna, _edition) => {
   attributesList = [];
 };
 
-const uploadPinata = async (_editionCount) => {
-  let metadata = metadataList.find((meta) => meta.edition == _editionCount);
-  const hash = await pinata.pinFromFS(`${buildDir}/images/${_editionCount}.png`, {
-    pinataMetadata: metadata
-  })
-  metadataList = metadataList.map(meta => {
-    if (meta.edition == _editionCount) {
-      meta.image = `ipfs://${hash.IpfsHash}`
-    }
-    return meta
-  })
-}
-
 const addAttributes = (_element) => {
   let selectedElement = _element.layer.selectedElement;
   attributesList.push({
@@ -236,6 +224,43 @@ function shuffle(array) {
   return array;
 }
 
+const uploadAllImagesToPinata = async () => {
+  console.log("Upload Images to Pinata")
+  const response = await pinata.pinFromFS(`${buildDir}/images`, {
+    pinataMetadata: pinataConfig.imagesMetadata
+  })
+  console.log("New base URI", response.IpfsHash)
+  baseUri = `ipfs://${response.IpfsHash}`
+}
+
+function updateBaseURI() {
+  console.log("Updata metadatas")
+  let rawdata = fs.readFileSync(`${basePath}/build/json/_metadata.json`);
+  let data = JSON.parse(rawdata);
+
+  data.forEach((item) => {
+    item.image = `${baseUri}/${item.edition}.png`;
+    fs.writeFileSync(
+      `${basePath}/build/json/${item.edition}.json`,
+      JSON.stringify(item, null, 2)
+    );
+  });
+
+  fs.writeFileSync(
+    `${basePath}/build/json/_metadata.json`,
+    JSON.stringify(data, null, 2)
+  );
+
+  console.log(`Updated baseUri for images to ===> ${baseUri}`);
+}
+
+const uploadAllJSONToPinata = async () => {
+  console.log("Upload metadata to Pinata")
+  await pinata.pinFromFS(`${buildDir}/json`, {
+    pinataMetadata: pinataConfig.jsonMetadata
+  })
+}
+
 const startCreating = async (upload = false) => {
   let layerConfigIndex = 0;
   let editionCount = 1;
@@ -284,9 +309,6 @@ const startCreating = async (upload = false) => {
             : null;
           saveImage(abstractedIndexes[0]);
           addMetadata(newDna, abstractedIndexes[0]);
-          if (upload) {
-            await uploadPinata(abstractedIndexes[0]);
-          }
           saveMetaDataSingleFile(abstractedIndexes[0]);
           console.log(
             `Created edition: ${abstractedIndexes[0]}, with DNA: ${sha1(
@@ -311,6 +333,11 @@ const startCreating = async (upload = false) => {
     layerConfigIndex++;
   }
   writeMetaData(JSON.stringify(metadataList, null, 2));
+  if (upload) {
+    await uploadAllImagesToPinata();
+    updateBaseURI();
+    await uploadAllJSONToPinata();
+  }
 };
 
 module.exports = { startCreating, buildSetup, getElements };

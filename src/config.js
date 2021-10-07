@@ -10,13 +10,10 @@ const baseUri = "ipfs://NewUriToReplace";
 
 const layerConfigurations = [
   {
-    growEditionSizeTo: 10,
+    growEditionSizeTo: 8,
     layersOrder: [
-      { name: "Background" },
-      { name: "Body" },
-      { name: "Around" },
-      { name: "Eyes" },
-      { name: "Mouth" },
+      { name: "base" },
+      { name: "corp" },
       { name: "Access" },
     ],
   },
@@ -37,7 +34,7 @@ const background = {
 };
 
 const extraMetadata = {
-  creator: "SkalvStudio & DotPerfect"
+  creator: "CutePoop Gang"
 };
 
 const rarityDelimiter = "#";
@@ -51,6 +48,17 @@ const preview = {
   imageName: "preview.png",
 };
 
+const pinataConfig = {
+  imagesMetadata: {
+    name: "poop_images",
+    keyvalues: {}
+  },
+  jsonMetadata: {
+    name: "poop_metadata",
+    keyvalues: {}
+  }
+}
+
 module.exports = {
   format,
   baseUri,
@@ -63,4 +71,5 @@ module.exports = {
   shuffleLayerConfigurations,
   debugLogs,
   extraMetadata,
+  pinataConfig
 };

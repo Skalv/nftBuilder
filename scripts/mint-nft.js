@@ -1,7 +1,7 @@
 require("dotenv").config()
 const API_URL = process.env.ALCHEMY_API
-const METAMASK_PRIVATE = process.env.METAMASK_PRIVATE
-const METAMASK_PUBLIC = process.env.METAMASK_PUBLIC
+const METAMASK_PRIVATE = process.env.METAMASK_PRIVATE_KEY
+const METAMASK_PUBLIC = process.env.METAMASK_PUBLIC_KEY
 
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3")
 const web3 = createAlchemyWeb3(API_URL)
@@ -11,7 +11,8 @@ const contractAddr = "0xC6d4605f61F8164378F0a8956e4035597e7E7FE9"
 
 const nftContract = new web3.eth.Contract(contract.abi, contractAddr)
 
-async function minNFT(tokenURI) {
+async function mintNFT(tokenURI) {
+  console.log(METAMASK_PUBLIC)
   const nonce = await web3.eth.getTransactionCount(METAMASK_PUBLIC, 'latest')
 
   const tx = {
@@ -19,9 +20,7 @@ async function minNFT(tokenURI) {
     'to': contractAddr,
     'nonce': nonce,
     'gas': 500000,
-    'data': nftContract.methods.minNFT(METAMASK_PUBLIC, tokenURI).encodeABI(
-
-    )
+    'data': nftContract.methods.mintNFT(METAMASK_PUBLIC, tokenURI).encodeABI()
   }
 
   const signPromise = web3.eth.accounts.signTransaction(tx, METAMASK_PRIVATE)
@@ -49,3 +48,7 @@ async function minNFT(tokenURI) {
       console.log(" Promise failed:", err)
     })
 }
+
+mintNFT(
+  "https://gateway.pinata.cloud/ipfs/QmPo9gme1DTCNJ4UXS195tXVjy3H2FP5eiLaNZpvUHgNEx"
+)
