@@ -6,15 +6,19 @@ const basePath = isLocal ? process.cwd() : path.dirname(process.execPath);
 const { MODE } = require(path.join(basePath, "src/blendMode.js"));
 const description =
   "First collection of our poop !";
-const baseUri = "ipfs://NewUriToReplace";
+const baseUri = "ipfs://QmVcDxEj5wgu9dtHbxCRP5VRkh6JhHtJJS9ztmfRdYXNcH";
 
 const layerConfigurations = [
   {
-    growEditionSizeTo: 8,
+    growEditionSizeTo: 10000,
     layersOrder: [
+      { name: "background" },
       { name: "base" },
-      { name: "corp" },
-      { name: "Access" },
+      { name: "colors" },
+      { name: "eyes" },
+      { name: "mouth" },
+      { name: "accessories" },
+      { name: "insects" },
     ],
   },
 ];

@@ -17,8 +17,8 @@ contract CutePoopNFT is ERC721Enumerable, Ownable {
     uint256 public cost = 0.04 ether;
     uint256 public maxSupply = 10000;
     uint256 public maxMintAmount = 20;
-    bool public revealed = false;
     string public notRevealedURI;
+    uint256 public revealedAt = 1634860800;
 
     mapping(uint256 => string) private _tokenURIs;
 
@@ -43,12 +43,20 @@ contract CutePoopNFT is ERC721Enumerable, Ownable {
         require(supply + _mintAmount <= maxSupply);
 
         if (msg.sender != owner()) {
-            require(msg.value >= cost * _mintAmount);
+            require(msg.value >= cost * _mintAmount, "Not enough ether sended");
         }
 
         for (uint256 i = 1; i <= _mintAmount; i++) {
             _safeMint(msg.sender, supply + i);
         }
+    }
+
+    function mintNFTGivewayPrize(address winner, uint256 tokenId)
+        public
+        onlyOwner
+    {
+        require(tokenId > maxSupply);
+        _safeMint(winner, tokenId);
     }
 
     function walletOfOwner(address _owner)
@@ -76,25 +84,25 @@ contract CutePoopNFT is ERC721Enumerable, Ownable {
             "ERC721Metadata: URI query fir nonexistent token"
         );
 
-        if (revealed == false) {
+        if (block.timestamp <= revealedAt) {
             return notRevealedURI;
-        }
-
-        string memory currentBaseURI = _baseURI();
-        return
-            bytes(currentBaseURI).length > 0
-                ? string(
-                    abi.encodePacked(
-                        currentBaseURI,
-                        tokenId.toString(),
-                        baseExtension
+        } else {
+            string memory currentBaseURI = _baseURI();
+            return
+                bytes(currentBaseURI).length > 0
+                    ? string(
+                        abi.encodePacked(
+                            currentBaseURI,
+                            tokenId.toString(),
+                            baseExtension
+                        )
                     )
-                )
-                : "";
+                    : "";
+        }
     }
 
-    function reveal() public onlyOwner {
-        revealed = true;
+    function setRevealAt(uint256 _newRevealDate) public onlyOwner {
+        revealedAt = _newRevealDate;
     }
 
     function setCost(uint256 _newCost) public onlyOwner {

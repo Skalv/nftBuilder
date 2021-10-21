@@ -2,15 +2,15 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/skalv/Projets/hashlips_art_engine/contracts/cutepoop.sol": {
-      "lastModificationDate": 1633593583867,
-      "contentHash": "4adb445890527bd7cf9ae6aeb8859972",
+      "lastModificationDate": 1634808742123,
+      "contentHash": "18183bf420b921f4312c8e2445d64931",
       "sourceName": "contracts/cutepoop.sol",
       "solcConfig": {
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -47,8 +47,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -89,8 +89,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -123,8 +123,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -195,8 +195,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -231,8 +231,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -265,8 +265,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -301,8 +301,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -335,8 +335,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -369,8 +369,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -403,8 +403,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -439,8 +439,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -473,8 +473,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
@@ -510,8 +510,8 @@
         "version": "0.8.0",
         "settings": {
           "optimizer": {
-            "enabled": false,
-            "runs": 200
+            "enabled": true,
+            "runs": 1
           },
           "outputSelection": {
             "*": {
